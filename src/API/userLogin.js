@@ -36,3 +36,19 @@ export const reportArticleAPI = (target, type) =>
       type
     }
   })
+// 获取用户列表接口/v1_0/user/channels
+export const getAllChannelAPI = () =>
+  requset({
+    url: '/v1_0/user/channels',
+    method: 'GET'
+  })
+
+// 更新 频道接口/v1_0/user/channels    channels
+export const updateUserChannelAPI = data =>
+  requset({
+    url: '/v1_0/user/channels',
+    method: 'PUT',
+    data: {
+      channels: data
+    }
+  })

@@ -19,6 +19,11 @@ const router = new VueRouter({
       path: '/main',
       component: () => import('@/views/Main.vue'),
       name: 'Main'
+    },
+    {
+      path: '/search',
+      component: () => import('@/components/search/SearchPage.vue'),
+      name: 'SearchPage'
     }
   ]
 })

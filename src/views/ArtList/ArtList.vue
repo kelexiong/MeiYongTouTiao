@@ -53,7 +53,7 @@
         </van-cell>
       </van-list>
     </van-pull-refresh>
-    <!-- 弹出层组件 -->
+    <!-- 不感兴趣弹出层组件 -->
     <van-action-sheet
       v-model="show"
       cancel-text="取消"
@@ -102,6 +102,7 @@ export default {
       loading: false,
       finished: false,
       isLoading: false,
+      // 不感兴趣弹出
       show: false,
       actions: [{ name: '不感兴趣' }, { name: '反馈垃圾内容' }, { name: '拉黑作者' }],
       isFirst: true,

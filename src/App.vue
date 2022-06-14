@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Headrs v-if="this.$route.path !== '/login'"></Headrs>
+    <Headrs v-if="this.$route.path !== '/login' && this.$route.path !== '/search'"></Headrs>
     <router-view></router-view>
-    <Floor v-if="this.$route.path !== '/login'"></Floor>
+    <Floor v-if="this.$route.path !== '/login' && this.$route.path !== '/search'"></Floor>
   </div>
 </template>
 

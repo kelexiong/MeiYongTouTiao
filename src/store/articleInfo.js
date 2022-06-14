@@ -1,7 +1,8 @@
 import { getAllList, getAllListAPI } from '@/API/userLogin'
 const state = {
   articleList: {},
-  targetY: 0
+  targetY: 0,
+  userChannel: []
 }
 const actions = {
   async getarticledata({ commit }) {
@@ -15,11 +16,18 @@ const actions = {
   },
   async getarticlelist({ commit }) {
     let result = await getAllListAPI()
+  },
+  getuserchannel({ commit }, data) {
+    console.log(data)
+    commit('GETUSERCHANNEL', data)
   }
 }
 const mutations = {
   GETARTICLEADTA(state, data) {
     state.articleList = data
+  },
+  GETUSERCHANNEL(state, data) {
+    state.userChannel = data
   }
 }
 const getters = {}

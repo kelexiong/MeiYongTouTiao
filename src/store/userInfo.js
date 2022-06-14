@@ -4,7 +4,7 @@ const state = {
   tokenInfo: {}
 }
 const actions = {
-  async saveToken({ commit }, data) {
+  saveToken({ commit }, data) {
     commit('SAVETOKEN', data)
   }
 }

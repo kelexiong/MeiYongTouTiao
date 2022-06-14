@@ -12,7 +12,7 @@
     </template>
     <!-- 右侧的插槽 -->
     <template #right>
-      <van-icon v-if="isleftboxshow" name="search" color="white" size="18" />
+      <van-icon v-if="isleftboxshow" name="search" color="white" size="18" @click.stop="toSearch" />
     </template>
   </van-nav-bar>
 </template>
@@ -23,6 +23,11 @@ export default {
   data() {
     return {
       leftboxshow: false
+    }
+  },
+  methods: {
+    toSearch() {
+      this.$router.push('/search')
     }
   },
   computed: {
@@ -41,7 +46,7 @@ export default {
   }
   .leftbox {
     display: flex;
-    width: 240px;
+    width: 210px;
     justify-content: space-between;
     align-items: center;
     .logo {
