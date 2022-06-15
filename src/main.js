@@ -11,8 +11,13 @@ import { Notify } from 'vant'
 import * as nothrough from '@/tool/no-through'
 Vue.config.productionTip = false
 // import VueRouter from 'vue-router'
+import xiao from '@/assets/123.gif'
 Vue.use(Vant)
-Vue.use(Lazyload)
+Vue.use(Lazyload, {
+  lazyComponent: true,
+  loading: xiao,
+  error: xiao
+})
 
 // 全局注册
 Vue.use(Notify)

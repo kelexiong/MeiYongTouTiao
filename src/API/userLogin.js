@@ -52,3 +52,29 @@ export const updateUserChannelAPI = data =>
       channels: data
     }
   })
+// 请求搜索列表 /v1_0/suggestion
+export const suggestionAPI = data =>
+  requset({
+    url: '/v1_0/suggestion',
+    method: 'GET',
+    params: {
+      q: data
+    }
+  })
+// 请求搜索结果列表 /v1_0/search
+
+export const searchresultAPI = (q, page) =>
+  requset({
+    url: '/v1_0/search',
+    method: 'GET',
+    params: {
+      q,
+      page
+    }
+  })
+// 请求文章详情/v1_0/articles/:art_id
+export const getarticlesInfoAPI = art_id =>
+  requset({
+    url: `/v1_0/articles/${art_id}`,
+    method: 'GET'
+  })

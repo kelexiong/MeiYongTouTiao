@@ -14,7 +14,11 @@
         offset="100"
         @load="onLoad"
       >
-        <van-cell v-for="item in artlist" :key="item.art_id">
+        <van-cell
+          v-for="item in artlist"
+          :key="item.art_id"
+          @click.stop="gotoArtlistInfo(item.art_id)"
+        >
           <!-- 标题区域的插槽 -->
           <template #title>
             <div class="title-box">
@@ -190,6 +194,10 @@ export default {
         this.boom()
         this.show = false
       }
+    },
+    // 去文章详情页面
+    gotoArtlistInfo(id) {
+      this.$router.push(`/artcleInfo/${id}`)
     }
   },
   computed: {

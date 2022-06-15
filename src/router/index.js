@@ -6,6 +6,10 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
     {
+      path: '/',
+      redirect: '/main'
+    },
+    {
       path: '/login',
       component: () => import('@/views/Login.vue'),
       name: 'Login'
@@ -13,17 +17,35 @@ const router = new VueRouter({
     {
       path: '/userInfoPage',
       component: () => import('@/views/UserInfo.vue'),
-      name: 'userInfoPage'
+      name: 'userInfoPage',
+      meta: {
+        isShow: true
+      }
     },
     {
       path: '/main',
       component: () => import('@/views/Main.vue'),
-      name: 'Main'
+      name: 'Main',
+      meta: {
+        isShow: true
+      }
     },
     {
       path: '/search',
       component: () => import('@/components/search/SearchPage.vue'),
-      name: 'SearchPage'
+      name: 'SearchPage',
+      children: [
+        {
+          path: ':q',
+          component: () => import('@/components/ArticleLIstLI/ArticleLIstLI.vue'),
+          name: 'ArticleLIstLI'
+        }
+      ]
+    },
+    {
+      path: '/artcleInfo/:id',
+      component: () => import('@/views/ArtListInfoPage/ArtListInfoPage.vue'),
+      name: 'ArtListInfoPage'
     }
   ]
 })

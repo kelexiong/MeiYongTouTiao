@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Headrs v-if="this.$route.path !== '/login' && this.$route.path !== '/search'"></Headrs>
+    <Headrs v-if="this.$route.meta.isShow"></Headrs>
     <router-view></router-view>
-    <Floor v-if="this.$route.path !== '/login' && this.$route.path !== '/search'"></Floor>
+    <Floor v-if="this.$route.meta.isShow"></Floor>
   </div>
 </template>
 
@@ -11,11 +11,8 @@ export default {
   name: 'App',
   components: {},
   data() {
-    return {
-      isShow: false
-    }
-  },
-  mounted() {}
+    return {}
+  }
 }
 </script>
 

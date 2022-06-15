@@ -13,7 +13,7 @@ requset.interceptors.request.use(
     // 在发送请求之前做些什么
     Toast.loading({
       message: '加载中...',
-      duration: 1000,
+      duration: 500,
       forbidClick: true
     })
     const tokenStr = store.state.userInfo.tokenInfo.token
