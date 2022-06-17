@@ -78,3 +78,43 @@ export const getarticlesInfoAPI = art_id =>
     url: `/v1_0/articles/${art_id}`,
     method: 'GET'
   })
+// 关注作者/v1_0/user/followings
+export const followingsAPI = target =>
+  requset({
+    url: '/v1_0/user/followings',
+    method: 'POST',
+    data: { target }
+  })
+// 取消关注/v1_0/user/followings/:author_id
+export const cancelFollowingsAPI = author_id =>
+  requset({
+    url: `/v1_0/user/followings/${author_id}`,
+    method: 'DELETE'
+  })
+// 点赞和取消点赞attitude   /v1_0/article/likings
+export const likingsAPI = target =>
+  requset({
+    url: '/v1_0/article/likings',
+    method: 'POST',
+    data: {
+      target
+    }
+  })
+export const cancellikingsAPI = article_id =>
+  requset({
+    url: `/v1_0/article/likings/${article_id}`,
+    method: 'DELETE'
+  })
+// 获取文章的评论数据 /v1_0/comments
+export const commentsAPI = (id, page) => {
+  console.log(id + '----------------')
+  return requset({
+    url: '/v1_0/comments',
+    method: 'GET',
+    params: {
+      type: 'a',
+      source: id,
+      offset: page
+    }
+  })
+}

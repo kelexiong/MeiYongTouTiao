@@ -26,6 +26,6 @@ export default {
 
 <style lang="less">
 .van-tabbar-item {
-  background-color: pink;
+  // background-color: pink;
 }
 </style>

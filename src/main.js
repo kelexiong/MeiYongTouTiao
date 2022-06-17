@@ -12,11 +12,12 @@ import * as nothrough from '@/tool/no-through'
 Vue.config.productionTip = false
 // import VueRouter from 'vue-router'
 import xiao from '@/assets/123.gif'
+import keli from '@/assets/1232.png'
 Vue.use(Vant)
 Vue.use(Lazyload, {
   lazyComponent: true,
   loading: xiao,
-  error: xiao
+  error: keli
 })
 
 // 全局注册
