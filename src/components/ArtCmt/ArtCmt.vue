@@ -1,47 +1,71 @@
 <template>
   <div class="xiehaode">
-    <!-- 评论列表 -->
-    <!-- <div class="cmt-list"> -->
-    <!-- 评论的 Item 项 -->
-    <!-- <div class="cmt-item"> -->
-    <!-- 头部区域 -->
-    <!-- <div class="cmt-header"> -->
-    <!-- 头部左侧 -->
-    <!-- <div class="cmt-header-left">
+    <div>
+      <!-- 评论列表 -->
+      <!-- <div class="cmt-list"> -->
+      <!-- 评论的 Item 项 -->
+      <!-- <div class="cmt-item"> -->
+      <!-- 头部区域 -->
+      <!-- <div class="cmt-header"> -->
+      <!-- 头部左侧 -->
+      <!-- <div class="cmt-header-left">
             <img src="" alt="" class="avatar" />
             <span class="uname">zs</span>
           </div> -->
-    <!-- 头部右侧 -->
-    <!-- <div class="cmt-header-right">
+      <!-- 头部右侧 -->
+      <!-- <div class="cmt-header-right">
             <van-icon name="like" size="16" color="red" />
             <van-icon name="like-o" size="16" color="gray" />
           </div>
         </div> -->
-    <!-- 主体区域 -->
-    <!-- <div class="cmt-body">
+      <!-- 主体区域 -->
+      <!-- <div class="cmt-body">
           基于字体的图标集，可以通过 Icon 组件使用，也可以在其他组件中通过 icon
           属性引用。基于字体的图标集，可以通过 Icon 组件使用，也可以在其他组件中通过 icon 属性引用。
         </div> -->
-    <!-- 尾部区域 -->
-    <!-- <div class="cmt-footer">3天前</div>
+      <!-- 尾部区域 -->
+      <!-- <div class="cmt-footer">3天前</div>
       </div>
     </div> -->
-    <div class="bigbox">
-      <div>
-        <!-- 头像 -->
-        <ArtCmtTouXiang></ArtCmtTouXiang>
-      </div>
-      <div class="user_nameOrlver">
-        <!-- 用户名和等级 -->
-        <ArtCmtUserName></ArtCmtUserName>
-        <div class="user_text">
-          属性引用。基于字体的图标集标集标集标集标集标集标集标集标集标集标集标集
-        </div>
-        <!-- 点赞和回复 -->
-        <ArtCmtDianOrHui></ArtCmtDianOrHui>
-      </div>
-      <div>{{ toTimes() }}</div>
     </div>
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      :immediate-check="false"
+      @load="onLoad"
+    >
+      <div class="bigbox" v-for="(items, index) in pinlunarr" :key="items.com_id">
+        <!-- 头像 -->
+        <div class="big_tou">
+          <ArtCmtTouXiang :images="items.aut_photo"></ArtCmtTouXiang>
+        </div>
+        <!-- 用户名和等级 -->
+        <div class="user_nameOrlver">
+          <ArtCmtUserName :rootname="items.aut_name"></ArtCmtUserName>
+          <div class="user_text">
+            {{ items.content }}
+          </div>
+          <!-- 点赞和回复 -->
+          <ArtCmtDianOrHui :rootId="items.com_id" :rootIsLiking="items.is_liking"></ArtCmtDianOrHui>
+          <!-- 回复的板块 -->
+          <div class="huifu" v-show="index === 0" v-for="(item, indexs) in cslists" :key="indexs">
+            <div class="tou">
+              <ArtCmtTouXiang></ArtCmtTouXiang>
+            </div>
+            <div class="huifu_userInfoOrtext">
+              <div class="uersname">
+                <ArtCmtUserName :name="item.name"></ArtCmtUserName>
+              </div>
+              <span>{{ item.title }}</span>
+              <div>
+                <ArtCmtDianOrHui></ArtCmtDianOrHui>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </van-list>
   </div>
 </template>
 
@@ -57,7 +81,21 @@ export default {
     return {
       page: undefined,
       pinlunData: {},
-      pinlunarr: []
+      pinlunarr: [],
+      loading: false,
+      finished: false,
+      cslists: [
+        {
+          name: '皮皮虾',
+          title:
+            '皮皮虾全为海生。掠虾类起源于中生代的侏罗纪，绝大多数种类生活于热带和亚热带海域，少数见于温带海域。中国沿海均有，其中以虾蛄科（Squillidae），口虾蛄属（Oratosquilla）旗下的广温性品种——口虾蛄（Oratosquilla oratoria）分布最广、产量最大'
+        },
+        {
+          name: '螃蟹',
+          title:
+            '螃蟹（páng xiè）属软甲纲，十足目，是甲壳类动物，身体被硬壳保护着，靠鳃呼吸。在生物分类学上，它与虾、龙虾、寄居蟹是同类动物。'
+        }
+      ]
     }
   },
   components: {
@@ -78,75 +116,18 @@ export default {
       if (req.message === 'OK') {
         this.pinlunData = req.data
         this.pinlunarr.push(...req.data.results)
+        if (req.data.last_id) {
+          this.page = req.data.last_id
+          this.loading = false
+        } else {
+          this.page = null
+          this.finished = true
+        }
       }
     },
-    toTimes(t) {
-      let time = Date.parse(t)
-      let time1 = Math.floor(time / 1000)
-      let time2 = Math.floor(new Date() / 1000)
-      let h = time2 - time1
-      let tt =
-        h / 60 < 1
-          ? (tt = '刚刚')
-          : h / 60 < 60
-          ? (tt = Math.floor(h / 60) + '分站前')
-          : h / 3600 < 24
-          ? Math.floor(h / 3600) + '小时前'
-          : h / 3600 / 24 < 30
-          ? Math.floor(h / 3600 / 24) + '天前'
-          : h / 3600 / 24 / 30 < 12
-          ? Math.floor(h / 3600 / 24 / 30) + '月前'
-          : Math.floor(h / 3600 / 24 / 30 / 12) + '年前'
-      return tt || NaN
+    onLoad() {
+      this.getcomments(this.art_id)
     }
-    //
-    /*
-[
-{
-start:初始时间，
-end:末尾时间，
-value:“刚刚”    然后只需要对这个map一下，如果你那个时间戳＞这个start ＜end 那就把value返回出去
-}
-]
-*/
-
-    /*
-arr:[{
-  start:Math.floor(new Date() / 1000)
-  end:Math.floor(new Date() / 1000)+60
-  value:'刚刚'
-}，
-{
-  start:Math.floor(new Date()/1000*60)
-  end:Math.floor(new Date()/1000*60)*60
-  value:'分钟'
-}，
-{
-  start:Math.floor(new Date()/1000*60*60)
-  end:Math.floor(new Date()/1000*60*60*24)
-  value:'小时'
-}，
-{
-  start:1
-  end:60
-  value:'秒'
-}，
-{
-  start:61
-  end:3600
-  value:'分'
-}，
-{
-  start:3601
-  end:3600*24+1
-  value:'小时'
-}
-]
-
-
-
-
-*/
   },
   computed: {}
 }
@@ -193,13 +174,51 @@ arr:[{
     }
   }
 } */
-
-.bigbox {
-  display: flex;
+.xiehaode {
   padding: 10px 10px;
-  .user_nameOrlver {
-    .user_text {
-      font-size: 16px;
+  .bigbox {
+    display: flex;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    .big_tou {
+      width: 40px;
+      height: 40px;
+    }
+    .user_nameOrlver {
+      width: 100%;
+      padding-left: 10px;
+      .user_text {
+        font-size: 16px;
+        padding: 10px 0;
+      }
+      .huifu {
+        position: relative;
+        background-color: #eee;
+        .tou {
+          position: absolute;
+          top: 0;
+          width: 1rem;
+          height: 1rem;
+        }
+        .tou + .huifu_userInfoOrtext {
+          margin-left: 1.5rem;
+        }
+        .huifu_userInfoOrtext {
+          font-size: 14px;
+          .uersname {
+            display: inline-flex;
+          }
+          .spanbox {
+            margin-left: 10px;
+          }
+          span {
+            margin-left: 20px;
+            word-wrap: break-word;
+            word-break: break-all;
+          }
+        }
+      }
     }
   }
 }

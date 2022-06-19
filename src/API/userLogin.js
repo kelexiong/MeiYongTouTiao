@@ -118,3 +118,14 @@ export const commentsAPI = (id, page) => {
     }
   })
 }
+// 点赞评论和取消点赞评论 /v1_0/comment/likings   ***/v1_0/comment/likings/:cmt_id
+export const commentlikingsAPI = target =>
+  requset({
+    url: '/v1_0/comment/likings',
+    method: 'POST',
+    data: {
+      target: target
+    }
+  })
+export const nocommentlikingsAPI = cmt_id =>
+  requset({ url: `/v1_0/comment/likings/${cmt_id}`, method: 'DELETE' })

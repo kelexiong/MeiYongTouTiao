@@ -1,19 +1,30 @@
 <template>
   <div class="user_touxiang">
-    <img v-lazy="" alt="" />
+    <img v-lazy="imagesUrl" alt="" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ArtCmtTouXiang'
+  name: 'ArtCmtTouXiang',
+  data() {
+    return {
+      dataxiang: require('@/assets/123.gif')
+    }
+  },
+  props: ['images'],
+  computed: {
+    imagesUrl() {
+      return this.images || this.dataxiang
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .user_touxiang {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 100%;
+  height: 100%;
   margin-right: 10px;
   border-radius: 50%;
   overflow: hidden;
