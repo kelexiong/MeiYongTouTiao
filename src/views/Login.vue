@@ -44,19 +44,20 @@ export default {
 
   methods: {
     async onSubmit() {
-      try {
-        let { data } = await userlogin(this.form)
-        if (data.message === 'OK') {
-          this.$store.dispatch('saveToken', data.data)
-          this.$router.push({
-            path: '/userInfoPage'
-          })
-        } else {
-          this.$notify({ type: 'warning', message: '登录失败' })
-        }
-      } catch (error) {
-        this.$notify({ type: 'warning', message: error.response.data.message })
+      // try {
+      let { data } = await userlogin(this.form)
+
+      if (data.message === 'OK') {
+        this.$store.dispatch('saveToken', data.data)
+        this.$router.push({
+          path: '/userInfoPage'
+        })
+      } else {
+        this.$notify({ type: 'warning', message: '登录失败' })
       }
+      // } catch (error) {
+      //   this.$notify({ type: 'warning', message: error.response.data.message })
+      // }
     }
   }
 }

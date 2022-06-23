@@ -16,7 +16,7 @@ requset.interceptors.request.use(
       duration: 500,
       forbidClick: true
     })
-    const tokenStr = store.state.userInfo.tokenInfo.token
+    let tokenStr = store.state.userInfo.tokenInfo.token
     if (tokenStr) {
       config.headers.Authorization = `Bearer ${tokenStr}`
     }

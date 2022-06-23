@@ -110,7 +110,7 @@ export default {
     })
   },
   methods: {
-    // 获取文章信息
+    // 获取文章评论信息
     async getcomments(id) {
       let { data: req } = await commentsAPI(id, this.page || '')
       if (req.message === 'OK') {

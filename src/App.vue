@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Headrs v-if="this.$route.meta.isShow"></Headrs>
+    <Headrs v-if="this.$route.meta.isShow && this.$route.path !== '/userInfoPage'"></Headrs>
     <router-view></router-view>
     <Floor v-if="this.$route.meta.isShow"></Floor>
   </div>

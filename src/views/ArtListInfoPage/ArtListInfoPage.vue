@@ -51,9 +51,9 @@
       <van-button icon="good-job-o" type="danger" plain size="small" v-else>点赞</van-button>
     </div>
     <van-divider></van-divider>
-    <ArtCmt v-if="artInfo.art_id" :art_id="artInfo.art_id"></ArtCmt>
+    <ArtCmt v-if="artInfo.art_id" :art_id="artInfo.art_id" ref="ArtCmt"></ArtCmt>
     <!-- 底部发布评论 -->
-    <div class="floor">
+    <div class="floor" :class="iswrite ? 'art-cmt-container-1' : 'art-cmt-container-2'">
       <!-- <van-tabbar v-model="active" fixed :placeholder="true">
         <van-tabbar-item icon="home-o">标签</van-tabbar-item>
         <van-tabbar-item icon="search">标签</van-tabbar-item>
@@ -61,23 +61,30 @@
         <van-tabbar-item icon="setting-o">标签</van-tabbar-item>
       </van-tabbar> -->
       <!-- 底部添加评论区域 - 1 -->
-      <div class="add-cmt-box van-hairline--top">
+      <div class="add-cmt-box van-hairline--top" v-if="!iswrite">
         <van-icon name="arrow-left" size="18" @click="$router.back()" />
-        <div class="ipt-cmt-div">发表评论</div>
+        <div class="ipt-cmt-div" @click.stop="qiehuan">发表评论</div>
         <div class="icon-box">
-          <van-badge :content="0" :max="99">
+          <van-badge :content="cmtCount" :max="99">
             <van-icon name="comment-o" size="20" />
           </van-badge>
           <van-icon name="star-o" size="20" />
           <van-icon name="share-o" size="20" />
         </div>
       </div>
-
       <!-- 底部添加评论区域 - 2 -->
-      <div class="cmt-box van-hairline--top">
-        <textarea placeholder="友善评论、理性发言、阳光心灵"></textarea>
-        <van-button type="default" disabled>发布</van-button>
-      </div>
+      <van-overlay v-show="iswrite" @click.stop="qisiwole($event)">
+        <div class="cmt-box van-hairline--top" @click.stop="">
+          <textarea
+            placeholder="友善评论、理性发言、阳光心灵"
+            v-model="commentContent"
+            ref="textarea"
+          ></textarea>
+          <van-button type="default" :disabled="commentContent.trim() === ''" @click.native="faBiao"
+            >发布</van-button
+          >
+        </div>
+      </van-overlay>
     </div>
   </div>
 </template>
@@ -88,7 +95,8 @@ import {
   followingsAPI,
   cancelFollowingsAPI,
   likingsAPI,
-  cancellikingsAPI
+  cancellikingsAPI,
+  releaseCommentsAPI
 } from '@/API/userLogin'
 import ArtCmt from '@/components/ArtCmt/ArtCmt.vue'
 export default {
@@ -100,7 +108,10 @@ export default {
       imageslazy: '../../assets/1232.png',
       active: 0,
       guanzhu: false,
-      dianzhan: 0
+      dianzhan: 0,
+      iswrite: false,
+      commentContent: '',
+      cmtCount: 0
     }
   },
   mounted() {
@@ -119,7 +130,7 @@ export default {
         this.artInfo = req.data
         this.guanzhu = req.data.is_followed
         this.dianzhan = req.data.attitude
-        console.log(this.artInfo)
+        this.cmtCount = req.data.comm_count
       }
     },
     async focusauthor(flg) {
@@ -142,6 +153,37 @@ export default {
 
         if (result.data.message === 'OK') this.dianzhan = 1
       }
+    },
+    qiehuan() {
+      this.iswrite = true
+      this.$nextTick(() => {
+        this.$refs.textarea.focus()
+      })
+    },
+    async faBiao() {
+      let data = {
+        target: this.artInfo.art_id,
+        content: this.commentContent
+      }
+      let { data: req } = await releaseCommentsAPI(data)
+      if (req.message === 'OK') {
+        this.iswrite = false
+
+        // 第一种写法，用户体验稍微差点，有页面重新加载效果
+        // this.$refs.ArtCmt._data.pinlunarr = []
+        // this.$refs.ArtCmt.getcomments(this.artInfo.art_id)
+        // 第二种写法，无页面刷新效果
+        this.$refs.ArtCmt._data.pinlunarr.unshift(req.data.new_obj)
+        this.cmtCount++
+        this.commentContent = ''
+      }
+
+      // console.log(this.$refs.ArtCmt)
+    },
+    qisiwole(evt) {
+      // if (!this.$refs.textarea.contains(evt.target)) {
+      this.iswrite = false
+      // }
     }
   }
 }

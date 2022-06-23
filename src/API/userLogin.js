@@ -1,10 +1,11 @@
 import requset from '@/request'
-export const userlogin = data =>
-  requset({
+export const userlogin = data => {
+  return requset({
     url: '/v1_0/authorizations',
     method: 'POST',
     data
   })
+}
 export const getAllList = () =>
   requset({
     url: '/v1_0/channels',
@@ -129,3 +130,16 @@ export const commentlikingsAPI = target =>
   })
 export const nocommentlikingsAPI = cmt_id =>
   requset({ url: `/v1_0/comment/likings/${cmt_id}`, method: 'DELETE' })
+//  发表评论 /v1_0/comments
+export const releaseCommentsAPI = data =>
+  requset({
+    url: '/v1_0/comments',
+    method: 'POST',
+    data
+  })
+// 获取用户信息 /v1_0/user
+export const getuserInfoAPI = () =>
+  requset({
+    url: '/v1_0/user',
+    method: 'GET'
+  })
